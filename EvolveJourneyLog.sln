@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvolveJourneyLog.Api", "Evo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvolveJourneyLog.Tests", "EvolveJourneyLog.Tests\EvolveJourneyLog.Tests.csproj", "{3D14C3A3-8813-429C-9F3D-510665EEDA19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvolveJourneyLog.Core", "EvolveJourneyLog.Core\EvolveJourneyLog.Core.csproj", "{48550EE1-D649-45DC-95B0-E28FE5D66D55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3D14C3A3-8813-429C-9F3D-510665EEDA19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D14C3A3-8813-429C-9F3D-510665EEDA19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D14C3A3-8813-429C-9F3D-510665EEDA19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48550EE1-D649-45DC-95B0-E28FE5D66D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48550EE1-D649-45DC-95B0-E28FE5D66D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48550EE1-D649-45DC-95B0-E28FE5D66D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48550EE1-D649-45DC-95B0-E28FE5D66D55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
