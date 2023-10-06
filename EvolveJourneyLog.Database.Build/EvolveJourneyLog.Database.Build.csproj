@@ -1,0 +1,21 @@
+<Project Sdk="MSBuild.Sdk.SqlProj/2.5.0">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SqlServerVersion>Sql140</SqlServerVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DeployOnPublish>false</DeployOnPublish>
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Include="../EvolveJourneyLog.Database/**/*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="../EvolveJourneyLog.Database/**/*.sql" />
+    <Content Remove="../EvolveJourneyLog.Database/bin/**" />
+    <Content Remove="../EvolveJourneyLog.Database/obj/**" />
+    <Content Remove="../EvolveJourneyLog.Database/Deployment/**" />
+    <Content Remove="../EvolveJourneyLog.Database/Security/Users/**" />
+  </ItemGroup>
+</Project>
