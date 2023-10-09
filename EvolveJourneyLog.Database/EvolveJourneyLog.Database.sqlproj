@@ -58,10 +58,12 @@
     <Folder Include="Properties" />
     <Folder Include="Security" />
     <Folder Include="Security\Schemas" />
-    <Folder Include="SomeSchema" />
+    <Folder Include="gamedata" />
+    <Folder Include="gamedata\Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Security\Schemas\SomeSchema.sql" />
-    <Build Include="SomeSchema\SomeTable.sql" />
+    <Build Include="Security\Schemas\gamedata.sql" />
+    <Build Include="gamedata\Tables\Player.sql" />
+    <Build Include="gamedata\Tables\GameSave.sql" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,11 @@
 ﻿namespace EvolveJourneyLog.Tests.DatabaseReliantTests;
 using System.Threading.Tasks;
 using EvolveJourneyLog.Tests.DatabaseReliantTests.Setup;
+using FluentAssertions;
 using PetaPoco;
 using Xunit;
 
-[Collection("Database collection"), Trait("Category", "Simple")]
+[Collection("Database collection"), Trait("Category", "Slow")]
 public sealed class DatabaseDeploymentTests : IDisposable
 {
     private readonly IDatabaseFactory _databaseFactory;
@@ -18,7 +19,7 @@ public sealed class DatabaseDeploymentTests : IDisposable
     {
         // Reset the table after each test
         using var database = _databaseFactory.GetDatabase();
-        database.Execute("DELETE FROM [SomeSchema].[SomeTable];");
+        database.Execute("DELETE FROM [gamedata].[Player];");
     }
 
     [Fact]
@@ -27,12 +28,12 @@ public sealed class DatabaseDeploymentTests : IDisposable
         using var database = _databaseFactory.GetDatabase();
 
         // Insert data
-        database.Execute("INSERT INTO [SomeSchema].[SomeTable] (Id) VALUES (1);");
+        database.Execute("INSERT INTO [gamedata].[Player] (PlayerName) VALUES ('SomeName');");
 
         // Read data
-        var id = await database.ExecuteScalarAsync<int>("SELECT Id FROM [SomeSchema].[SomeTable] WHERE Id = 1;");
+        var playerName = await database.ExecuteScalarAsync<string>("SELECT TOP 1 PlayerName FROM [gamedata].[Player];");
 
-        Assert.Equal(1, id);
+        playerName.Should().Be("SomeName");
     }
 }
 
