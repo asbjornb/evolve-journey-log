@@ -4,6 +4,11 @@
     PlayerID INT NOT NULL, 
     WriteTime DATETIME2(0) NOT NULL DEFAULT GETUTCDATE(),
     RawSaveData VARCHAR(MAX) NOT NULL,
+    SaveHash AS (CONVERT(CHAR(64), HASHBYTES('SHA2_256', LEFT(RawSaveData, 8000)))) PERSISTED,
 
     CONSTRAINT FK_PlayerID FOREIGN KEY (PlayerID) REFERENCES gamedata.Player(PlayerID)
 );
+GO
+
+CREATE UNIQUE INDEX NCIX_SaveHash ON gamedata.GameSave(SaveHash);
+GO
