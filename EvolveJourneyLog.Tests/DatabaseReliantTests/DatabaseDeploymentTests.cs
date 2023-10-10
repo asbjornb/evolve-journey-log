@@ -1,9 +1,8 @@
-﻿namespace EvolveJourneyLog.Tests.DatabaseReliantTests;
-using System.Threading.Tasks;
-using EvolveJourneyLog.Core.Repositories;
+﻿using EvolveJourneyLog.Core.Repositories.DatabaseHelpers;
 using EvolveJourneyLog.Tests.DatabaseReliantTests.Setup;
 using FluentAssertions;
-using Xunit;
+
+namespace EvolveJourneyLog.Tests.DatabaseReliantTests;
 
 [Collection("Database collection"), Trait("Category", "Slow")]
 public sealed class DatabaseDeploymentTests : IDisposable
@@ -17,7 +16,6 @@ public sealed class DatabaseDeploymentTests : IDisposable
 
     public void Dispose()
     {
-        // Reset the table after each test
         using var database = _databaseFactory.GetDatabase();
         database.Execute("DELETE FROM [gamedata].[Player];");
     }

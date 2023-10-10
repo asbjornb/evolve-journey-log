@@ -3,7 +3,7 @@
 namespace EvolveJourneyLog.Core.Repositories.Pocos;
 
 #nullable disable
-[TableName("GameSave")]
+[TableName("gamedata.GameSave")]
 [PrimaryKey("SaveID")]
 internal class GameSavePoco
 {
@@ -13,4 +13,14 @@ internal class GameSavePoco
     public string RawSaveData { get; set; }
     [ResultColumn]
     public string SaveHash { get; set; }
+
+    public GameSavePoco(Guid playerId, string rawSaveData)
+    {
+        PlayerId = playerId;
+        RawSaveData = rawSaveData;
+    }
+
+    private GameSavePoco()
+    {
+    }
 }

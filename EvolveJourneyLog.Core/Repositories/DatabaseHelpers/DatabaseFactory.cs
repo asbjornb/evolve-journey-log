@@ -1,6 +1,6 @@
 ﻿using PetaPoco;
 
-namespace EvolveJourneyLog.Core.Repositories;
+namespace EvolveJourneyLog.Core.Repositories.DatabaseHelpers;
 
 public class DatabaseFactory : IDatabaseFactory
 {

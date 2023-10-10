@@ -1,4 +1,5 @@
-﻿using EvolveJourneyLog.Core.Repositories.Pocos;
+﻿using EvolveJourneyLog.Core.Repositories.DatabaseHelpers;
+using EvolveJourneyLog.Core.Repositories.Pocos;
 
 namespace EvolveJourneyLog.Core.Repositories;
 
@@ -11,13 +12,9 @@ public class GameSaveRepository
         _databaseFactory = dbFactory;
     }
 
-    public async Task SaveAsync(Guid editToken, string rawSaveData)
+    public async Task SaveAsync(Guid playerId, string rawSaveData)
     {
-        var gameSave = new GameSavePoco
-        {
-            
-            RawSaveData = rawSaveData
-        };
+        var gameSave = new GameSavePoco(playerId, rawSaveData);
         using var database = _databaseFactory.GetDatabase();
         await database.InsertAsync(gameSave);
     }

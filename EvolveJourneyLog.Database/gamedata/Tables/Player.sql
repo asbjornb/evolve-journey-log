@@ -4,5 +4,6 @@
     ViewToken UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
     PlayerName NVARCHAR(255) NULL,
 
-    CONSTRAINT UQ_ViewToken UNIQUE (ViewToken)
+    CONSTRAINT UQ_ViewToken UNIQUE (ViewToken),
+    CONSTRAINT UQ_PlayerName UNIQUE (PlayerName)
 );
