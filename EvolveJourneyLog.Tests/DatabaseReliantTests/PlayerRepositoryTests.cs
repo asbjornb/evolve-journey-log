@@ -19,7 +19,6 @@ public sealed class PlayerRepositoryTests : IDisposable
 
     public void Dispose()
     {
-        // Reset the table after each test
         using var database = _databaseFactory.GetDatabase();
         database.Execute("DELETE FROM [gamedata].[Player];");
     }
@@ -27,10 +26,8 @@ public sealed class PlayerRepositoryTests : IDisposable
     [Fact]
     public async Task CanSavePlayerAndGetPlayerId()
     {
-        // Act
         var playerId = await _playerRepository.SaveAsync("TestName");
 
-        // Assert
         using var database = _databaseFactory.GetDatabase();
         var retrievedPlayerId = await database.ExecuteScalarAsync<Guid>("SELECT TOP 1 PlayerId FROM [gamedata].[Player] WHERE PlayerName = 'TestName';");
 

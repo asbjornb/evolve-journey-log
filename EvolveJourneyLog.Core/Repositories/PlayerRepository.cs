@@ -19,6 +19,6 @@ public class PlayerRepository
         using var database = _databaseFactory.GetDatabase();
         await database.InsertAsync(player);
 
-        return player.PlayerID;
+        return player.PlayerId;
     }
 }
