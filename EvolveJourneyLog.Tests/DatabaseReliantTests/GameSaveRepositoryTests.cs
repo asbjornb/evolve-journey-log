@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlClient;
 using EvolveJourneyLog.Core.Repositories;
 using EvolveJourneyLog.Core.Repositories.DatabaseHelpers;
+using EvolveJourneyLog.Core.Repositories.Models;
 using EvolveJourneyLog.Tests.DatabaseReliantTests.Setup;
 using FluentAssertions;
 
@@ -33,7 +34,8 @@ public sealed class GameSaveRepositoryTests : IDisposable
         var playerId = await _playerRepository.SaveAsync("TestPlayer");
         const string rawSaveData = "TestSaveData";
 
-        await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
+        var result = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
+        result.Should().Be(SaveResult.Success);
 
         using var database = _databaseFactory.GetDatabase();
         var retrievedRawSaveData = await database.ExecuteScalarAsync<string>("SELECT TOP 1 RawSaveData FROM [gamedata].[GameSave] WHERE PlayerId = @0;", playerId);
@@ -47,9 +49,21 @@ public sealed class GameSaveRepositoryTests : IDisposable
         var playerId = await _playerRepository.SaveAsync("TestPlayer");
         const string rawSaveData = "DuplicateSaveData";
 
-        await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
+        var firstSaveResult = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
+        firstSaveResult.Should().Be(SaveResult.Success); // Check if the first save was successful
 
-        using var database = _databaseFactory.GetDatabase();
-        await Assert.ThrowsAsync<SqlException>(() => _gameSaveRepository.SaveAsync(playerId, rawSaveData));
+        var secondSaveResult = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
+        secondSaveResult.Should().Be(SaveResult.DuplicateSave); // Check if the second save is detected as duplicate
+    }
+
+    [Fact]
+    public async Task SavingForNonExistingPlayerReturnsPlayerNotFoundError()
+    {
+        var nonExistingPlayerId = Guid.NewGuid();
+        const string rawSaveData = "TestData";
+
+        var saveResult = await _gameSaveRepository.SaveAsync(nonExistingPlayerId, rawSaveData);
+
+        saveResult.Should().Be(SaveResult.PlayerNotFound);
     }
 }
