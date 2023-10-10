@@ -60,10 +60,14 @@
     <Folder Include="Security\Schemas" />
     <Folder Include="gamedata" />
     <Folder Include="gamedata\Tables" />
+    <Folder Include="Deploy\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\Schemas\gamedata.sql" />
     <Build Include="gamedata\Tables\Player.sql" />
     <Build Include="gamedata\Tables\GameSave.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Deploy\local.publish.xml" />
   </ItemGroup>
 </Project>
