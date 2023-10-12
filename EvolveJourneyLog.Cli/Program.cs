@@ -55,7 +55,19 @@ public static class Program
 
         if (opts.Inspect)
         {
-            File.WriteAllLines(Path.Combine(outputPath, "schema.txt"), uniqueKeys);
+            File.WriteAllLines(Path.Combine(outputPath, "schema.txt"), uniqueKeys.OrderBy(k => k));
+
+            var filteredKeys = uniqueKeys
+                .Where(key => (key.StartsWith("race") && !key.StartsWith("race.governor.config") && !key.StartsWith("race.governor.tasks"))
+                    || key.StartsWith("genes")
+                    || key.StartsWith("stats")
+                    || key.StartsWith("prestige")
+                    || key.StartsWith("city.biome")
+                    || key.StartsWith("blood")
+                    || key.StartsWith("version"))
+                .OrderBy(k => k);
+
+            File.WriteAllLines(Path.Combine(outputPath, "schema-filtered.txt"), filteredKeys);
         }
     }
 
