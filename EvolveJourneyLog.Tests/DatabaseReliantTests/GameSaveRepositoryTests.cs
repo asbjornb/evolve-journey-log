@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using EvolveJourneyLog.Core.Repositories;
+﻿using EvolveJourneyLog.Core.Repositories;
 using EvolveJourneyLog.Core.Repositories.DatabaseHelpers;
 using EvolveJourneyLog.Core.Repositories.Models;
 using EvolveJourneyLog.Tests.DatabaseReliantTests.Setup;
@@ -35,7 +34,7 @@ public sealed class GameSaveRepositoryTests : IDisposable
         const string rawSaveData = "TestSaveData";
 
         var result = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
-        result.Should().Be(SaveResult.Success);
+        result.Should().BeOfType(typeof(SaveSuccess));
 
         using var database = _databaseFactory.GetDatabase();
         var retrievedRawSaveData = await database.ExecuteScalarAsync<string>("SELECT TOP 1 RawSaveData FROM [gamedata].[GameSave] WHERE PlayerId = @0;", playerId);
@@ -50,10 +49,10 @@ public sealed class GameSaveRepositoryTests : IDisposable
         const string rawSaveData = "DuplicateSaveData";
 
         var firstSaveResult = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
-        firstSaveResult.Should().Be(SaveResult.Success); // Check if the first save was successful
+        firstSaveResult.Should().BeOfType(typeof(SaveSuccess)); ; // Check if the first save was successful
 
         var secondSaveResult = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
-        secondSaveResult.Should().Be(SaveResult.DuplicateSave); // Check if the second save is detected as duplicate
+        secondSaveResult.Should().BeEquivalentTo(new SaveFailure(SaveResult.DuplicateSave)); // Check if the second save is detected as duplicate
     }
 
     [Fact]
@@ -64,6 +63,6 @@ public sealed class GameSaveRepositoryTests : IDisposable
 
         var saveResult = await _gameSaveRepository.SaveAsync(nonExistingPlayerId, rawSaveData);
 
-        saveResult.Should().Be(SaveResult.PlayerNotFound);
+        saveResult.Should().BeEquivalentTo(new SaveFailure(SaveResult.PlayerNotFound));
     }
 }

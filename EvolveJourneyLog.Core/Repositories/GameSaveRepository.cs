@@ -14,7 +14,7 @@ public class GameSaveRepository
         _databaseFactory = dbFactory;
     }
 
-    public async Task<SaveResult> SaveAsync(Guid playerId, string rawSaveData)
+    public async Task<ISaveResponse> SaveAsync(Guid playerId, string rawSaveData)
     {
         var gameSave = new GameSavePoco(playerId, rawSaveData);
         using var database = _databaseFactory.GetDatabase();
@@ -22,17 +22,17 @@ public class GameSaveRepository
         try
         {
             await database.InsertAsync(gameSave);
-            return SaveResult.Success;
+            return new SaveSuccess(gameSave.SaveId);
         }
         catch (SqlException ex)
         {
             if (IsDuplicateSaveError(ex))
             {
-                return SaveResult.DuplicateSave;
+                return new SaveFailure(SaveResult.DuplicateSave);
             }
             if (IsForeignKeyPlayerViolationError(ex))
             {
-                return SaveResult.PlayerNotFound;
+                return new SaveFailure(SaveResult.PlayerNotFound);
             }
             throw;
         }
@@ -40,7 +40,7 @@ public class GameSaveRepository
 
     private static bool IsForeignKeyPlayerViolationError(SqlException ex)
     {
-        return ex.Message.Contains("The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_PlayerId\"");
+        return ex.Message.Contains("The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_GameSave_PlayerId\"");
     }
 
     private static bool IsDuplicateSaveError(SqlException ex)
