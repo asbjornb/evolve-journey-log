@@ -66,6 +66,8 @@
     <Build Include="Security\Schemas\gamedata.sql" />
     <Build Include="gamedata\Tables\Player.sql" />
     <Build Include="gamedata\Tables\GameSave.sql" />
+    <Build Include="gamedata\Tables\Run.sql" />
+    <Build Include="gamedata\Tables\PrestigeResources.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deploy\local.publish.xml" />
