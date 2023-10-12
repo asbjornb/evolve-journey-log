@@ -5,8 +5,10 @@
     WriteTime DATETIME2(0) NOT NULL DEFAULT GETUTCDATE(),
     RawSaveData VARCHAR(MAX) NOT NULL,
     SaveHash AS (CONVERT(CHAR(64), HASHBYTES('SHA2_256', LEFT(RawSaveData, 8000)))) PERSISTED,
+    RunId INT NULL, --Fill out after first saving raw data
 
-    CONSTRAINT FK_PlayerId FOREIGN KEY (PlayerId) REFERENCES gamedata.Player(PlayerId)
+    CONSTRAINT FK_GameSave_PlayerId FOREIGN KEY (PlayerId) REFERENCES gamedata.Player(PlayerId),
+    CONSTRAINT FK_GameSave_RunId FOREIGN KEY (RunId) REFERENCES gamedata.Run(RunId)
 );
 GO
 
