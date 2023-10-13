@@ -2,7 +2,6 @@
 using EvolveJourneyLog.Core.JsonExtraction.JsonExtractors;
 using EvolveJourneyLog.Core.Repositories;
 using EvolveJourneyLog.Core.Repositories.Models;
-using Newtonsoft.Json;
 
 namespace EvolveJourneyLog.Core.Services;
 
@@ -31,18 +30,5 @@ public class GameSaveService
         }
 
         return result is SaveFailure failure ? failure.Result : SaveResult.Success;
-    }
-
-    public async Task<IEnumerable<SaveResult>> HandleUserUploadsAsync(Guid playerId, IEnumerable<string> rawSaveDatas)
-    {
-        var results = new List<SaveResult>();
-
-        foreach (var rawData in rawSaveDatas)
-        {
-            var result = await HandleUserUploadAsync(playerId, rawData);
-            results.Add(result);
-        }
-
-        return results;
     }
 }
