@@ -49,7 +49,7 @@ public sealed class GameSaveRepositoryTests : IDisposable
         const string rawSaveData = "DuplicateSaveData";
 
         var firstSaveResult = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
-        firstSaveResult.Should().BeOfType(typeof(SaveSuccess)); ; // Check if the first save was successful
+        firstSaveResult.Should().BeOfType(typeof(SaveSuccess)); // Check if the first save was successful
 
         var secondSaveResult = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
         secondSaveResult.Should().BeEquivalentTo(new SaveFailure(SaveResult.DuplicateSave)); // Check if the second save is detected as duplicate

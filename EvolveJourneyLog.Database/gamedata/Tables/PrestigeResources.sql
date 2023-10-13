@@ -5,7 +5,7 @@
     AntiPlasmid INT NOT NULL,
     Artifact INT NOT NULL,
     BloodStone INT NOT NULL,
-    DarkEnergy INT NOT NULL,
+    DarkEnergy DECIMAL(18,2) NOT NULL,
     HarmonyCrystal INT NOT NULL,
     Phage INT NOT NULL,
     Plasmid INT NOT NULL,

@@ -13,9 +13,9 @@ public class PrestigeResourceRepository
         _databaseFactory = dbFactory;
     }
 
-    public async Task<SaveResult> SaveAsync(int saveId, int aiCore, int antiPlasmid, int artifact, int bloodStone, int darkEnergy, int harmonyCrystal, int phage, int plasmid)
+    public async Task<SaveResult> SaveAsync(int saveId, int aiCore, int antiPlasmid, int artifact, int bloodStone, double darkEnergy, int harmonyCrystal, int phage, int plasmid)
     {
-        var prestigeResources = new PrestigeResourcesPoco(saveId, aiCore, antiPlasmid, artifact, bloodStone, darkEnergy, harmonyCrystal, phage, plasmid);
+        var prestigeResources = new PrestigeResourcePoco(saveId, aiCore, antiPlasmid, artifact, bloodStone, darkEnergy, harmonyCrystal, phage, plasmid);
         using var database = _databaseFactory.GetDatabase();
 
         await database.InsertAsync(prestigeResources);
