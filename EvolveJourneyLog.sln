@@ -13,7 +13,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "EvolveJourneyLog.Database",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvolveJourneyLog.Database.Build", "EvolveJourneyLog.Database.Build\EvolveJourneyLog.Database.Build.csproj", "{2382E374-C549-4668-A8AD-278C2CADAFEF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvolveJourneyLog.Cli", "EvolveJourneyLog.CLI\EvolveJourneyLog.Cli.csproj", "{2E427B61-3E54-4618-BA69-D9EB82BC7271}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvolveJourneyLog.Cli", "EvolveJourneyLog.Cli\EvolveJourneyLog.Cli.csproj", "{2E427B61-3E54-4618-BA69-D9EB82BC7271}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

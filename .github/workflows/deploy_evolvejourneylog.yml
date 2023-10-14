@@ -6,7 +6,9 @@ name: Build and deploy ASP.Net Core app to Azure Web App - EvolveJourneyLog
 on:
   push:
     branches:
-      - deploy
+      - main
+    tags:
+      - v*  # This will match tags like v1.0, v2.1, etc.
   workflow_dispatch:
 
 jobs:
@@ -26,13 +28,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish evolve-journey-log/EvolveJourneyLog.api/EvolveJourneyLog.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/EvolveJourneyLogApi
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.DOTNET_ROOT}}/EvolveJourneyLogApi
 
   deploy:
     runs-on: ubuntu-latest
