@@ -23,8 +23,8 @@ public class PlayerController : ControllerBase
         return Ok(playerId);
     }
 
-    [HttpPost("uploadSave")]
-    public async Task<IActionResult> UploadSave(Guid playerId, string rawSaveData)
+    [HttpPost("{playerId}/uploadSave")]
+    public async Task<IActionResult> UploadSave(Guid playerId, [FromBody] string rawSaveData)
     {
         var result = await _gameSaveService.HandleUserUploadAsync(playerId, rawSaveData);
         return Ok(result);
