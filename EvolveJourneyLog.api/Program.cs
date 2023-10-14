@@ -23,11 +23,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger(); //For a short while use swagger in production
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
