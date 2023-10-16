@@ -16,6 +16,7 @@ builder.Services.AddTransient<PlayerService>();
 builder.Services.AddTransient<GameSaveService>();
 
 builder.Services.AddControllers();
+builder.Services.AddCors();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,6 +28,12 @@ app.UseSwagger(); //For a short while use swagger in production
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors(builder =>
+    builder.WithOrigins("https://asbjornb.github.io")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+);
 
 app.UseAuthorization();
 
