@@ -16,7 +16,7 @@ public class GameSaveService
         _prestigeResourceRepository = prestigeResourceRepository;
     }
 
-    public async Task<SaveResult> HandleUserUploadAsync(Guid playerId, string rawSaveData)
+    public async Task<ISaveResponse> HandleUserUploadAsync(Guid playerId, string rawSaveData)
     {
         var result = await _gameSaveRepository.SaveAsync(playerId, rawSaveData);
 
@@ -29,6 +29,6 @@ public class GameSaveService
             await _prestigeResourceRepository.SaveAsync(success.SaveId, deserializedData.AICore, deserializedData.AntiPlasmid, deserializedData.Artifact, deserializedData.BloodStone, deserializedData.DarkEnergy, deserializedData.HarmonyCrystal, deserializedData.Phage, deserializedData.Plasmid);
         }
 
-        return result is SaveFailure failure ? failure.Result : SaveResult.Success;
+        return result;
     }
 }

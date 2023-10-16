@@ -1,4 +1,5 @@
 ﻿using EvolveJourneyLog.Api.Controllers.Requests;
+using EvolveJourneyLog.Core.Repositories.Models;
 using EvolveJourneyLog.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +49,11 @@ public class PlayerController : ControllerBase
         try
         {
             var result = await _gameSaveService.HandleUserUploadAsync(playerId, rawSaveData);
-            return Ok(result);
+            if(result is SaveFailure failure)
+            {
+                return BadRequest(failure.Result.ToString());
+            }
+            return Ok();
         }
         catch (Exception ex)
         {

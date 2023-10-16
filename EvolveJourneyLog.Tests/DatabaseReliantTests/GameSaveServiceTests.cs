@@ -42,7 +42,7 @@ public sealed class GameSaveServiceTests : IDisposable
 
         var result = await _gameSaveService.HandleUserUploadAsync(playerId, fileContent);
 
-        result.Should().Be(SaveResult.Success);
+        result.Should().BeOfType(typeof(SaveSuccess));
 
         using var database = _databaseFactory.GetDatabase();
         var retrievedResources = await database.FetchAsync<PrestigeResourcePoco>();

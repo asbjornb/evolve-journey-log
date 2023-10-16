@@ -22,7 +22,7 @@ public class GameSaveRepository
         try
         {
             await database.InsertAsync(gameSave);
-            return new SaveSuccess(gameSave.SaveId);
+            return new SaveSuccess(gameSave.SaveId); //Do I need the Id back?
         }
         catch (SqlException ex)
         {
