@@ -94,7 +94,7 @@
                 return;
             }
 
-            const playerId = await response.text();
+            const playerId = await response.json();
 
             document.getElementById('playerIdInfo').innerText = `Your Player ID is: ${playerId}. Note this GUID somewhere - if you lose it you won't be able to access your data again.`;
 
