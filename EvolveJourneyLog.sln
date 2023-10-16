@@ -23,9 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{2BAB0CAF-7240-47CD-950F-2D97F367DEF2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{2BAB0CAF-7240-47CD-950F-2D97F367DEF2}"
 	ProjectSection(SolutionItems) = preProject
-		web\index.html = web\index.html
+		docs\index.html = docs\index.html
 	EndProjectSection
 EndProject
 Global
