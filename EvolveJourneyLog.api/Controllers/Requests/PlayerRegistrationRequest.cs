@@ -2,5 +2,5 @@
 
 public class PlayerRegistrationRequest
 {
-    public string PlayerName { get; set; }
+    public required string PlayerName { get; set; }
 }
