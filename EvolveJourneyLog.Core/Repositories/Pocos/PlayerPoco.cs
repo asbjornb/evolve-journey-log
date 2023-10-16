@@ -8,6 +8,7 @@ namespace EvolveJourneyLog.Core.Repositories.Pocos;
 internal class PlayerPoco
 {
     public Guid PlayerId { get; set; }
+    [Ignore]
     public Guid ViewToken { get; set; }
     public string PlayerName { get; set; }
 
