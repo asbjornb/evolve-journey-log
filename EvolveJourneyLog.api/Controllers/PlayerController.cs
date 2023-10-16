@@ -17,16 +17,32 @@ public class PlayerController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(string? playerName)
+    public async Task<IActionResult> Register(string playerName)
     {
-        var playerId = await _playerService.RegisterPlayerAsync(playerName);
-        return Ok(playerId);
+        try
+        {
+            var playerId = await _playerService.RegisterPlayerAsync(playerName);
+            return Ok(playerId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex); //TODO: Use proper logger
+            return StatusCode(500, "An error occurred while registering the player.");
+        }
     }
 
     [HttpPost("{playerId}/uploadSave")]
     public async Task<IActionResult> UploadSave(Guid playerId, [FromBody] string rawSaveData)
     {
-        var result = await _gameSaveService.HandleUserUploadAsync(playerId, rawSaveData);
-        return Ok(result);
+        try
+        {
+            var result = await _gameSaveService.HandleUserUploadAsync(playerId, rawSaveData);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex); //TODO: Use proper logger
+            return StatusCode(500, "An error occurred while writing save data.");
+        }
     }
 }

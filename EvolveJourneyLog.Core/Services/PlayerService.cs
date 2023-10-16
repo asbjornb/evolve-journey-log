@@ -11,7 +11,7 @@ public class PlayerService
         _playerRepository = playerRepository;
     }
 
-    public async Task<Guid> RegisterPlayerAsync(string? playerName)
+    public async Task<Guid> RegisterPlayerAsync(string playerName)
     {
         return await _playerRepository.SaveAsync(playerName);
     }

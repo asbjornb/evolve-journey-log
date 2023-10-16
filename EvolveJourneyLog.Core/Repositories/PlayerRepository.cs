@@ -12,7 +12,7 @@ public class PlayerRepository
         _databaseFactory = dbFactory;
     }
 
-    public async Task<Guid> SaveAsync(string? playerName)
+    public async Task<Guid> SaveAsync(string playerName)
     {
         var player = new PlayerPoco(playerName);
 

@@ -29,6 +29,13 @@
             body: JSON.stringify({ playerName: playerName }),
             headers: { 'Content-Type': 'application/json' }
         });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            alert(`Error: ${errorMessage}`);
+            return;
+        }
+
         const playerId = await response.text();
 
         document.getElementById('playerIdInfo').innerText = `Your Player ID is: ${playerId}. Note this GUID somewhere - if you lose it you won't be able to access your data again.`;
@@ -52,6 +59,12 @@
                 body: JSON.stringify({ rawSaveData: fileContent }),
                 headers: { 'Content-Type': 'application/json' }
             });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                alert(`Error: ${errorMessage}`);
+                return;
+            }
 
             const result = await response.json();
             console.log(result);  // For now, just logging the result.
