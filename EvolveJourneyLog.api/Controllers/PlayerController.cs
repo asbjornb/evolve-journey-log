@@ -38,8 +38,13 @@ public class PlayerController : ControllerBase
     }
 
     [HttpPost("{playerId}/uploadSave")]
-    public async Task<IActionResult> UploadSave(Guid playerId, [FromBody] string rawSaveData)
+    public async Task<IActionResult> UploadSave(Guid playerId, [FromBody] UploadSaveRequest request)
     {
+        var rawSaveData = request.RawSave;
+        if (string.IsNullOrWhiteSpace(rawSaveData))
+        {
+            return BadRequest("Save data cannot be empty.");
+        }
         try
         {
             var result = await _gameSaveService.HandleUserUploadAsync(playerId, rawSaveData);

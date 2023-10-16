@@ -112,9 +112,13 @@
             for (let file of files) {
                 const fileContent = await file.text();
 
+                const payload = {
+                    RawSave: fileContent
+                };
+
                 const response = await fetch(`${API_BASE}/${playerId}/uploadSave`, {
                     method: 'POST',
-                    body: JSON.stringify({ rawSaveData: fileContent }),
+                    body: JSON.stringify(JSON.stringify(payload)),
                     headers: { 'Content-Type': 'application/json' }
                 });
 
