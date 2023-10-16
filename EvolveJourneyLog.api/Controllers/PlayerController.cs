@@ -17,8 +17,12 @@ public class PlayerController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(string playerName)
+    public async Task<IActionResult> Register(string? playerName)
     {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            return BadRequest("Player name cannot be empty.");
+        }
         try
         {
             var playerId = await _playerService.RegisterPlayerAsync(playerName);
