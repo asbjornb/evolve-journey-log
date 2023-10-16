@@ -1,4 +1,5 @@
-﻿using EvolveJourneyLog.Core.Services;
+﻿using EvolveJourneyLog.Api.Controllers.Requests;
+using EvolveJourneyLog.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EvolveJourneyLog.Api.Controllers;
@@ -17,8 +18,9 @@ public class PlayerController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(string? playerName)
+    public async Task<IActionResult> Register([FromBody] PlayerRegistrationRequest request)
     {
+        var playerName = request.PlayerName;
         if (string.IsNullOrWhiteSpace(playerName))
         {
             return BadRequest("Player name cannot be empty.");

@@ -78,8 +78,13 @@
             const playerName = prompt("Enter your player name:");
             if (!playerName) return;
 
-            const response = await fetch(`${API_BASE}/register?playerName=${playerName}`, {
+            const payload = {
+                playerName: playerName
+            };
+
+            const response = await fetch(`${API_BASE}/register`, {
                 method: 'POST',
+                body: JSON.stringify(payload),
                 headers: { 'Content-Type': 'application/json' }
             });
 
