@@ -2,41 +2,69 @@ using EvolveJourneyLog.Core.Repositories;
 using EvolveJourneyLog.Core.Repositories.DatabaseHelpers;
 using EvolveJourneyLog.Core.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace EvolveJourneyLog.Api;
 
-//Configurations
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string in configuration.");
-builder.Services.AddSingleton<IDatabaseFactory>(new DatabaseFactory(connectionString));
+public static class Program
+{
+    public static void Main(string[] args)
+    {
+        var config = GenerateConfiguration(args);
+        var app = BuildApp(config);
+        app.Run();
+    }
 
-// Add services to the container.
-builder.Services.AddTransient<PlayerRepository>();
-builder.Services.AddTransient<GameSaveRepository>();
-builder.Services.AddTransient<PrestigeResourceRepository>();
-builder.Services.AddTransient<PlayerService>();
-builder.Services.AddTransient<GameSaveService>();
+    public static IConfiguration GenerateConfiguration(string[] args)
+    {
+        var configBuilder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+            .AddEnvironmentVariables()
+            .AddCommandLine(args);
 
-builder.Services.AddControllers();
-builder.Services.AddCors();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+        return configBuilder.Build();
+    }
 
-var app = builder.Build();
+    private static WebApplication BuildApp(IConfiguration config)
+    {
+        var builder = WebApplication.CreateBuilder();
+        builder.Configuration.AddConfiguration(config);
 
-// Configure the HTTP request pipeline.
-app.UseSwagger(); //For a short while use swagger in production
-app.UseSwaggerUI();
+        //Configurations
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string in configuration.");
+        builder.Services.AddSingleton<IDatabaseFactory>(new DatabaseFactory(connectionString));
 
-app.UseHttpsRedirection();
+        // Add services to the container.
+        builder.Services.AddTransient<PlayerRepository>();
+        builder.Services.AddTransient<GameSaveRepository>();
+        builder.Services.AddTransient<PrestigeResourceRepository>();
+        builder.Services.AddTransient<PlayerService>();
+        builder.Services.AddTransient<GameSaveService>();
 
-app.UseCors(builder =>
-    builder.WithOrigins("https://asbjornb.github.io")
-           .AllowAnyMethod()
-           .AllowAnyHeader()
-);
+        builder.Services.AddControllers();
+        builder.Services.AddCors();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-app.UseAuthorization();
+        var app = builder.Build();
 
-app.MapControllers();
+        // Configure the HTTP request pipeline.
+        app.UseSwagger(); //For a short while use swagger in production
+        app.UseSwaggerUI();
 
-app.Run();
+        app.UseHttpsRedirection();
+
+        app.UseCors(builder =>
+            builder.WithOrigins("https://asbjornb.github.io")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+        );
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        return app;
+    }
+}
