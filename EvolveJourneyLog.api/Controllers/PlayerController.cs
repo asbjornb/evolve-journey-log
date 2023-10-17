@@ -53,7 +53,7 @@ public class PlayerController : ControllerBase
             {
                 return BadRequest(failure.Result.ToString());
             }
-            return Ok();
+            return Ok(new { message = "Success" });
         }
         catch (Exception ex)
         {
