@@ -55,6 +55,34 @@
         input[type="file"] {
             margin-bottom: 10px;
         }
+
+        /* Styling for success message */
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+
+        /* Styling for text area */
+        #rawSaveInput {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Styling for spinner */
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -63,16 +91,27 @@
         <h1>Evolve Journey Log</h1>
 
         <!-- Registration section -->
-        <button onclick="registerPlayer()">Register Player</button>
+        <div id="registrationSection">
+            <button onclick="registerPlayer()">Register Player</button>
+        </div>
         <div id="playerIdInfo"></div>
 
         <!-- Upload section -->
+        <textarea id="rawSaveInput" placeholder="Paste your save here..."></textarea>
         <input type="file" id="fileInput" multiple>
+        <div class="spinner" id="uploadSpinner"></div>
         <button onclick="uploadSaves()">Upload Save(s)</button>
+        <div class="success-message" id="uploadSuccess" style="display:none;">Save(s) uploaded successfully!</div>
     </div>
 
     <script>
         const API_BASE = 'https://evolvejourneylog.azurewebsites.net/api/player';
+
+        const playerId = localStorage.getItem('playerId');
+        if (playerId) {
+            document.getElementById('registrationSection').style.display = 'none';
+            document.getElementById('playerIdInfo').innerText = `Player ID: ${playerId}`;
+        }
 
         async function registerPlayer() {
             const playerName = prompt("Enter your player name:");
@@ -99,6 +138,10 @@
             document.getElementById('playerIdInfo').innerText = `Your Player ID is: ${playerId}. Note this GUID somewhere - if you lose it you won't be able to access your data again.`;
 
             localStorage.setItem('playerId', playerId);  // Store the playerId in local storage
+
+            // Update the UI after registering
+            document.getElementById('registrationSection').style.display = 'none';
+            document.getElementById('playerIdInfo').innerText = `Player ID: ${playerId}`;
         }
 
         async function uploadSaves() {
@@ -109,6 +152,13 @@
             }
 
             const files = document.getElementById('fileInput').files;
+
+            // Display the spinner
+            document.getElementById('uploadSpinner').style.display = 'inline-block';
+            document.getElementById('uploadSuccess').style.display = 'none';  // Hide success message
+
+            let uploadSuccess = true;
+
             for (let file of files) {
                 const fileContent = await file.text();
 
@@ -123,6 +173,7 @@
                 });
 
                 if (!response.ok) {
+                    uploadSuccess = false;
                     const errorMessage = await response.text();
                     alert(`Error: ${errorMessage}`);
                     return;
@@ -131,6 +182,13 @@
                 const result = await response.json();
                 console.log(result);  // For now, just logging the result.
             }
+
+            // Hide the spinner
+            document.getElementById('uploadSpinner').style.display = 'none';
+
+            if (uploadSuccess) {
+                document.getElementById('uploadSuccess').style.display = 'block';
+           }
         }
     </script>
 </body>
