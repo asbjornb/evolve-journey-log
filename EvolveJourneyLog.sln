@@ -26,6 +26,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{2BAB0CAF-7240-47CD-950F-2D97F367DEF2}"
 	ProjectSection(SolutionItems) = preProject
 		docs\index.html = docs\index.html
+		docs\styles.css = docs\styles.css
+		docs\script.js = docs\script.js
 	EndProjectSection
 EndProject
 Global
