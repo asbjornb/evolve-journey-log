@@ -61,6 +61,7 @@
     <Folder Include="gamedata" />
     <Folder Include="gamedata\Tables" />
     <Folder Include="Deploy\" />
+    <Folder Include="Security\Users" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\Schemas\gamedata.sql" />
@@ -68,6 +69,7 @@
     <Build Include="gamedata\Tables\GameSave.sql" />
     <Build Include="gamedata\Tables\Run.sql" />
     <Build Include="gamedata\Tables\PrestigeResources.sql" />
+    <Build Include="Security\Users\app-rw.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deploy\local.publish.xml" />
