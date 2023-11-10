@@ -1,3 +1,4 @@
+using EvolveJourneyLog.Api.Controllers;
 using EvolveJourneyLog.Core.Repositories;
 using EvolveJourneyLog.Core.Repositories.DatabaseHelpers;
 using EvolveJourneyLog.Core.Services;
@@ -9,7 +10,8 @@ public static class Program
     public static void Main(string[] args)
     {
         var config = GenerateConfiguration(args);
-        var app = BuildApp(config);
+        var builder = SetupBuilder(config);
+        var app = BuildAndConfigureApp(builder);
         app.Run();
     }
 
@@ -25,28 +27,34 @@ public static class Program
         return configBuilder.Build();
     }
 
-    private static WebApplication BuildApp(IConfiguration config)
+    public static WebApplicationBuilder SetupBuilder(IConfiguration config)
     {
         var builder = WebApplication.CreateBuilder();
         builder.Configuration.AddConfiguration(config);
 
         //Configurations
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string in configuration.");
-        builder.Services.AddSingleton<IDatabaseFactory>(new DatabaseFactory(connectionString));
 
-        // Add services to the container.
+        // Add services to the container
+        builder.Services.AddSingleton<IDatabaseFactory>(new DatabaseFactory(connectionString));
         builder.Services.AddTransient<PlayerRepository>();
         builder.Services.AddTransient<GameSaveRepository>();
         builder.Services.AddTransient<PrestigeResourceRepository>();
         builder.Services.AddTransient<PlayerService>();
         builder.Services.AddTransient<GameSaveService>();
 
-        builder.Services.AddControllers();
+        // This was neccesary to be able to run from the test-project. Otherwise reflection won't pick up controllers since they are in a different assembly.
+        builder.Services.AddControllers().AddApplicationPart(typeof(PlayerController).Assembly);
         builder.Services.AddCors();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        return builder;
+    }
+
+    public static WebApplication BuildAndConfigureApp(WebApplicationBuilder builder)
+    {
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -55,15 +63,17 @@ public static class Program
 
         app.UseHttpsRedirection();
 
-        app.UseCors(builder =>
-            builder.WithOrigins("https://asbjornb.github.io")
-                   .AllowAnyMethod()
-                   .AllowAnyHeader()
-        );
-
-        app.UseAuthorization();
+        //var corsOrigins = builder.Configuration.GetSection("CorsOrigins").Get<string[]>() ?? throw new InvalidOperationException("Missing cors origins in configuration.");
+        //app.UseCors(builder =>
+        //    builder.WithOrigins(corsOrigins)
+        //           .AllowAnyMethod()
+        //           .AllowAnyHeader()
+        //);
+        //Temporarily allow all origins
+        app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
         app.MapControllers();
+        app.UseAuthorization();
 
         return app;
     }

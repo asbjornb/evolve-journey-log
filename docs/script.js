@@ -1,4 +1,9 @@
-﻿const API_BASE = 'https://evolvejourneylog.azurewebsites.net/api/player';
+﻿let API_BASE;
+if (window.location.protocol === "file:") {
+    API_BASE = 'https://localhost:7274/api/player';
+} else {
+    API_BASE = 'https://evolvejourneylog.azurewebsites.net/api/player';
+}
 
 const playerId = localStorage.getItem('playerId');
 if (playerId) {
